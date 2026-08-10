@@ -1,0 +1,6 @@
+User-Agent: *
+Allow: /
+Disallow: /member
+Disallow: /admin
+
+Sitemap: https://credify.co.sz/sitemap.xml
