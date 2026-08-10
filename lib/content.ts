@@ -1,7 +1,14 @@
+// Matches the basePath logic in next.config.mjs. next/image and next/link
+// apply basePath automatically, but plain string paths used in inline CSS
+// (the hero background) do not, so every asset path is prefixed here at
+// the source instead of relying on per-usage handling.
+const basePath = process.env.GITHUB_PAGES === "true" ? "/credify-eswatini" : "";
+const asset = (path: string) => `${basePath}${path}`;
+
 export const brand = {
   name: "Credify Eswatini",
   tagline: "Building Better Homes, Together.",
-  logo: "/images/credify-logo.png",
+  logo: asset("/images/credify-logo.png"),
   whatsappNumber: process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || "",
   contact: {
     phone: process.env.NEXT_PUBLIC_CREDIFY_PHONE || "To be supplied by Credify",
@@ -12,7 +19,7 @@ export const brand = {
 
 // Every key below maps to its own unique photo file — no image is reused
 // across two different sections anywhere on the site.
-export const images = {
+const rawImages = {
   homeHero: "/images/hero-family.jpg",
   goalBuy: "/images/family-kitchen-loft.jpg",
   goalBuild: "/images/construction-women.jpg",
@@ -68,6 +75,10 @@ export const images = {
 
   logo: "/images/credify-logo.png"
 };
+
+export const images = Object.fromEntries(
+  Object.entries(rawImages).map(([key, path]) => [key, asset(path)])
+) as typeof rawImages;
 
 export const navItems = [
   { label: "Home", href: "/" },
